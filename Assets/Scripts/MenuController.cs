@@ -32,7 +32,7 @@ public class MenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("here4");
+        // Debug.Log("here4");
         finishObjects = GameObject.FindGameObjectsWithTag("ShowOnFinish");
         foreach(GameObject g in finishObjects){
 			g.SetActive(false);
@@ -43,7 +43,7 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("here3");
+        // Debug.Log("here3");
 
        if (Time.timeScale == 0 && playerController.alive == false)
        {

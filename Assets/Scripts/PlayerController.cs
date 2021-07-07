@@ -26,6 +26,11 @@ public class PlayerController : MonoBehaviour
 
     public bool alive;
 
+    //instantiate material
+    Material m_marioSprite;
+    public Material Glow;
+    public Material Normal;
+
     // Start is called before the first frame update
     void  Start()
     {
@@ -36,6 +41,12 @@ public class PlayerController : MonoBehaviour
         marioAnimator = GetComponent<Animator>();
         marioAudioSource = GetComponent<AudioSource>();
         alive = true; 
+
+        //getting material of mario sprite
+        GetComponent<SpriteRenderer>().material = Normal;
+        print("Materials " + Resources.FindObjectsOfTypeAll(typeof(Material)).Length);
+        
+
     }
 
     void Update()
@@ -63,7 +74,6 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-
         marioAnimator.SetFloat("xSpeed", Mathf.Abs(marioBody.velocity.x));
         // if (!onGroundState && countScoreState)
         // {
@@ -83,6 +93,8 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         if (Mathf.Abs(moveHorizontal) > 0)
         {
+            //make mario glow when moving
+            GetComponent<SpriteRenderer>().material = Glow;
             Vector2 movement = new Vector2(moveHorizontal, 0);
             if (marioBody.velocity.magnitude < maxSpeed)
             {
@@ -92,6 +104,10 @@ public class PlayerController : MonoBehaviour
         if (Mathf.Abs(marioBody.velocity.y) > 0)
         {
             onGroundState = false;
+
+            //make mario glow when jumping
+            GetComponent<SpriteRenderer>().material = Glow;
+
         }
 
         if (Input.GetKeyDown("a") == false && Input.GetKeyDown("d") == false && onGroundState)
@@ -108,6 +124,12 @@ public class PlayerController : MonoBehaviour
             marioAnimator.SetBool("onGround", onGroundState);
 
             // countScoreState = true; //check if Gomba is underneath
+        }
+
+        //make mario not glow when not moving
+        if (Mathf.Abs(moveHorizontal) == 0 && Mathf.Abs(marioBody.velocity.y) == 0)
+        {
+            GetComponent<SpriteRenderer>().material = Normal;
         }
 
     }
@@ -130,8 +152,6 @@ public class PlayerController : MonoBehaviour
             marioAnimator.SetBool("onGround", onGroundState);
 
         }
-
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -140,9 +160,9 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Collided with Gomba!");
             alive = false;
-            Debug.Log("here");
+            // Debug.Log("here");
             Time.timeScale = 0;
-            Debug.Log("here2");
+            // Debug.Log("here2");
         }
     }
 
@@ -153,3 +173,4 @@ public class PlayerController : MonoBehaviour
 
 
 }
+ 
